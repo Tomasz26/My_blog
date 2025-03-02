@@ -2,6 +2,7 @@
 Blog made with different tools (Flask, SQLAlchemy, Bootstrap)
 
 ## How it looks:
-![obraz](https://github.com/user-attachments/assets/3933bb9f-43f2-4f0c-9e15-98fb710864a6)
+![obraz](https://github.com/user-attachments/assets/dd1a7320-5bc0-4b77-bee1-cd853c7505ca)
+
 
 
