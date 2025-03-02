@@ -1,8 +1,11 @@
-from flask import Flask, render_template, url_for, request
+from flask import render_template
 from blog import app
+from blog.models import Entry
 
 #app = Flask(__name__)
 
-@app.route('/')
+@app.route("/")
 def homepage():
-    return render_template("home.html")
+    all_posts = Entry.query.filter_by(is_published=True).order_by(Entry.pub_date.desc())
+
+    return render_template("home.html", all_posts=all_posts)
