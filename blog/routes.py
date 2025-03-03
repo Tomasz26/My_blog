@@ -31,3 +31,16 @@ def new_post():
             errors = form.errors
 
     return render_template("add_post.html", form=form, errors=errors)
+
+@app.route("/edit-post/<int:entry_id>", methods=["GET", "POST"])
+def edit_entry(entry_id):
+   entry = Entry.query.filter_by(id=entry_id).first_or_404()
+   form = EntryForm(obj=entry)
+   errors = None
+   if request.method == 'POST':
+       if form.validate_on_submit():
+           form.populate_obj(entry)
+           db.session.commit()
+       else:
+           errors = form.errors
+   return render_template("add_post.html", form=form, errors=errors)
