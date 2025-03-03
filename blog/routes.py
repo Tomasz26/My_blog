@@ -11,36 +11,29 @@ def homepage():
 
     return render_template("home.html", all_posts=all_posts)
 
+
+
 @app.route("/new_post", methods=['GET', 'POST'])
-def new_post():
-    form = EntryForm()
+@app.route("/edit-post/<int:entry_id>", methods=["GET", "POST"])
+def handle_post(entry_id = None):
     errors = ""
 
-    if request.method == "POST":
-        if form.validate_on_submit():
-            post = Entry(
-                title = form.title.data,
-                body = form.body.data,
-                is_published=form.is_published.data
-                )
-            db.session.add(post)
-            db.session.commit()
-            flash("Post added successfully!", "success")
-            return redirect(url_for("homepage"))
-        else:
-            errors = form.errors
+    if entry_id:  
+        entry = Entry.query.filter_by(id=entry_id).first_or_404()
+        form = EntryForm(obj=entry)
+    else:  
+        form = EntryForm()
+        entry = Entry()
 
+    if request.method == 'POST' and form.validate_on_submit():
+        form.populate_obj(entry)
+
+        if not entry_id: 
+            db.session.add(entry)
+
+        db.session.commit()
+        flash("Post saved successfully!", "success")
+        return redirect(url_for("homepage"))
+
+    errors = form.errors if request.method == 'POST' else None
     return render_template("add_post.html", form=form, errors=errors)
-
-@app.route("/edit-post/<int:entry_id>", methods=["GET", "POST"])
-def edit_entry(entry_id):
-   entry = Entry.query.filter_by(id=entry_id).first_or_404()
-   form = EntryForm(obj=entry)
-   errors = None
-   if request.method == 'POST':
-       if form.validate_on_submit():
-           form.populate_obj(entry)
-           db.session.commit()
-       else:
-           errors = form.errors
-   return render_template("add_post.html", form=form, errors=errors)
