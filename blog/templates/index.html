@@ -30,6 +30,18 @@
                         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="about.html">About</a></li>
                         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{{ url_for('handle_post') }}">Add Post</a></li>
                         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="contact.html">Contact</a></li>
+                        {% if 'logged_in' in session %}
+                            <li class="nav-item">
+                                <form action="{{ url_for('logout') }}" method="post" style="display:inline;">
+                                    <button type="submit" class="nav-link px-lg-3 py-3 py-lg-4" 
+                                            style="background: none; border: none; color: white; font-weight: bold; text-transform: uppercase; cursor: pointer;">
+                                        Logout
+                                    </button>
+                                </form>
+                            </li>
+                        {% else %}
+                            <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{{ url_for('login') }}">Login</a></li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>
