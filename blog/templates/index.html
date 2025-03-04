@@ -28,17 +28,16 @@
                     <ul class="navbar-nav ms-auto py-4 py-lg-0">
                         
                         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="about.html">About</a></li>
-                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{{ url_for('handle_post') }}">Add Post</a></li>
                         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="contact.html">Contact</a></li>
                         {% if 'logged_in' in session %}
                             <li class="nav-item">
-                                <form action="{{ url_for('logout') }}" method="post" style="display:inline;">
-                                    <button type="submit" class="nav-link px-lg-3 py-3 py-lg-4" 
-                                            style="background: none; border: none; color: white; font-weight: bold; text-transform: uppercase; cursor: pointer;">
-                                        Logout
-                                    </button>
-                                </form>
+                                <a class="nav-link px-lg-3 py-3 py-lg-4" href="#" onclick="document.getElementById('logout-form').submit(); return false;">
+                                    Logout
+                                </a>
+                                <form id="logout-form" action="{{ url_for('logout') }}" method="post" style="display: none;"></form>
                             </li>
+                            <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{{ url_for('handle_post') }}">Add Post</a></li>
+                            <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{{ url_for('drafts') }}">Post drafts</a></li>
                         {% else %}
                             <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{{ url_for('login') }}">Login</a></li>
                         {% endif %}
@@ -46,8 +45,9 @@
                 </div>
             </div>
         </nav>
+        
         <!-- Page Header-->
-        <header class="masthead" style="background-image: url('{{ url_for('static', filename='img/home-bg.jpg') }}')">
+        <header class="masthead" style="background-image: url('{{ url_for('static', filename='img/home-bg.jpg') }}'); height: 300px; display: flex; align-items: center; justify-content: center; text-align: center">
             <div class="container position-relative px-4 px-lg-5">
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-md-10 col-lg-8 col-xl-7">
@@ -60,6 +60,20 @@
             </div>
         </header>
         <!-- Main Content-->
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="container mt-3">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
         {% block content %}
         {% endblock %}
         <!-- Footer-->
@@ -103,4 +117,7 @@
         <!-- Core theme JS-->
         <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
     </body>
+
+    
+
 </html>

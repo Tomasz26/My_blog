@@ -1,9 +1,16 @@
-from flask import render_template, request, flash, redirect, url_for, session
+from flask import render_template, request, flash, redirect, url_for, session, Flask
 from blog import app
 from blog.models import Entry, db
 from blog.forms import EntryForm, LoginForm
+import functools
 
-#app = Flask(__name__)
+def login_required(view_func):
+   @functools.wraps(view_func)
+   def check_permissions(*args, **kwargs):
+       if session.get('logged_in'):
+           return view_func(*args, **kwargs)
+       return redirect(url_for('login', next=request.path))
+   return check_permissions
 
 @app.route("/")
 def homepage():
@@ -13,6 +20,7 @@ def homepage():
 
 @app.route("/new_post", methods=['GET', 'POST'])
 @app.route("/edit-post/<int:entry_id>", methods=["GET", "POST"])
+@login_required
 def handle_post(entry_id = None):
     errors = ""
 
@@ -35,6 +43,20 @@ def handle_post(entry_id = None):
 
     errors = form.errors if request.method == 'POST' else None
     return render_template("add_post.html", form=form, errors=errors)
+
+@app.route("/delete-post/<int:entry_id>", methods=["POST"])
+@login_required
+def delete_post(entry_id = None):
+
+    post = Entry.query.filter_by(id=entry_id).first_or_404()
+
+    if post:
+        db.session.delete(post)
+        db.session.commit()
+        flash("Post deleted successfully!", "success")
+        return redirect(url_for("drafts"))
+
+    return render_template("draft_list.html")
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
@@ -59,3 +81,10 @@ def logout():
         session.clear()
         flash('You are now logged out.', 'success')
     return redirect(url_for('homepage'))
+
+@app.route('/posts_not_published', methods=['GET', 'POST'])
+@login_required
+def drafts():
+    all_posts = Entry.query.filter_by(is_published=False).order_by(Entry.pub_date.desc())
+
+    return render_template("draft_list.html", all_posts=all_posts)
