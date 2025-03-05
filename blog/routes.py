@@ -74,6 +74,16 @@ def login():
            errors = form.errors
     return render_template("login_form.html", form=form, errors=errors)
 
+@app.route('/post/<int:entry_id>')
+def show_post(entry_id):
+    error = None
+
+    if entry_id:
+        entry = Entry.query.filter_by(id=entry_id).first_or_404()
+    else:
+        error = error
+
+    return render_template("post.html", post = entry, error = error)
 
 @app.route('/logout/', methods=['GET', 'POST'])
 def logout():

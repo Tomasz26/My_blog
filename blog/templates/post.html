@@ -1,0 +1,31 @@
+{% extends "index.html" %}
+
+{% block content %}
+<div class="container">
+    <h2 class="post-title mb-5 text-wrap">{{ post.title }}</h2>
+    <h3 class="post-subtitle mb-5 text-wrap">{{ post.body }}</h3>
+
+    <p class="post-meta d-flex justify-content-between align-items-center">
+        <span>
+            Posted by <a href="#!">Me</a> on {{ post.pub_date.strftime('%Y-%m-%d') }}
+        </span>
+        {% if 'logged_in' in session %}
+        <div class="d-flex justify-content-end align-items-center gap-2">
+            <a href="{{ url_for('handle_post', entry_id=post.id) }}" class="text-decoration-none">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                </svg>
+            </a>
+            <form action="{{ url_for('delete_post', entry_id=post.id) }}" method="POST" class="d-inline">
+                <button type="submit" class="btn btn-link text-danger p-0 border-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                        <path d="M5.5 5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5V6h1v-.5a1.5 1.5 0 0 0-1.5-1.5h-4A1.5 1.5 0 0 0 4.5 5.5V6h1V5zM4 7v6.5A1.5 1.5 0 0 0 5.5 15h5a1.5 1.5 0 0 0 1.5-1.5V7H4zm3 1h1v6H7V8zm3 0h-1v6h1V8z"/>
+                    </svg>
+                </button>
+            </form>
+        </div>
+        {% endif %}
+    </p>
+</div>
+
+{% endblock %}
