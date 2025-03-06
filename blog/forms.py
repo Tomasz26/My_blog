@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, BooleanField, PasswordField
-from wtforms.validators import DataRequired
+from wtforms.validators import DataRequired, Email, Length
 from config import Config
 from werkzeug.routing import ValidationError
 
@@ -8,6 +8,11 @@ class EntryForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     body = TextAreaField('Post body', validators=[DataRequired()])
     is_published = BooleanField('Is post published')
+
+class MessageForm(FlaskForm):
+    name_surname = StringField('Name & Surname', validators=[DataRequired(), Length(max=120)])
+    contact_mail = StringField('Your contact mail', validators=[DataRequired(), Email(), Length(max=120)])
+    body = TextAreaField('Message', validators=[DataRequired()])
 
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])

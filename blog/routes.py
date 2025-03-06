@@ -1,7 +1,7 @@
 from flask import render_template, request, flash, redirect, url_for, session, Flask
 from blog import app
-from blog.models import Entry, db
-from blog.forms import EntryForm, LoginForm
+from blog.models import Entry, Message, db
+from blog.forms import EntryForm, LoginForm, MessageForm
 import functools
 
 def login_required(view_func):
@@ -17,6 +17,23 @@ def homepage():
     all_posts = Entry.query.filter_by(is_published=True).order_by(Entry.pub_date.desc())
 
     return render_template("home.html", all_posts=all_posts)
+
+@app.route('/contact_me', methods=['GET', 'POST'])
+def contact():
+    form = MessageForm()
+
+    if request.method == 'POST' and form.validate_on_submit():
+        message = Message(
+            name_surname=form.name_surname.data,
+            contact_mail=form.contact_mail.data,
+            body=form.body.data
+        )
+        db.session.add(message)
+        db.session.commit()
+        flash("Message sent successfully!", "success")
+        return redirect(url_for("homepage"))
+
+    return render_template("contact.html", form=form)
 
 @app.route("/new_post", methods=['GET', 'POST'])
 @app.route("/edit-post/<int:entry_id>", methods=["GET", "POST"])

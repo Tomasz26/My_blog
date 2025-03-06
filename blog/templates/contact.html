@@ -1,0 +1,35 @@
+{% extends "index.html" %}
+
+{% block content %}
+<div class="container px-4 px-lg-5 mt-5">
+    <h2> Send me a message: </h2>
+    <form method="POST" action="/contact_me">
+        {{ form.hidden_tag() }}
+
+        <div class="mb-3">
+            <label for="title" class="form-label">Name & Surname</label>
+            {{ form.name_surname(class="form-control", placeholder="Enter your name") }}
+        </div>
+        <div class="mb-3">
+            <label for="body" class="form-label">Email</label>
+            {{ form.contact_mail(class="form-control", rows="6", placeholder="Enter your email") }}
+        </div>
+        <div class="mb-3">
+            <label for="body" class="form-label">Email</label>
+            {{ form.body(class="form-control", rows="6", placeholder="Message...") }}
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Send</button>
+    </form>
+</div>
+
+<div>
+    <footer class="mt-5 py-4 bg-light text-center">
+        <div class="container">
+            <p class="mb-1">Contact me via classic email:</p>
+            <p class="fw-bold">Tomasz Mantur</p>
+            <p>Email: <a href="mailto:tomasz.mantur26@gmail.com">tomasz.mantur26@gmail.com</a></p>
+        </div>
+    </footer>
+</div>
+
+{% endblock %}
