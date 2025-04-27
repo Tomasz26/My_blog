@@ -109,6 +109,10 @@ def logout():
         flash('You are now logged out.', 'success')
     return redirect(url_for('homepage'))
 
+@app.route('/about/', methods=['GET', 'POST'])
+def about_me():
+    return render_template("about.html")
+
 @app.route('/posts_not_published', methods=['GET', 'POST'])
 @login_required
 def drafts():

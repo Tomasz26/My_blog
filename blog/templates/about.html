@@ -1,0 +1,48 @@
+{% extends "index.html" %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row align-items-center">
+
+      <div class="col-md-6 text-center">
+        <img src={{ url_for('static', filename='img/My_photo.jpg') }} class="img-fluid rounded-circle" alt="Tomasz">
+      </div>
+      
+      <div class="col-md-6">
+        <h1>Hello! I'm Tomasz</h1>
+        <p>This blog was created by me using technologies like Flask, SQL, and Bootstrap. Feel free to treat it as part of my portfolio! :)</p>
+      </div>
+    </div>
+  
+
+    <div class="row mt-5">
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">Skills</h5>
+            <p class="card-text">Python, Flask, SQL, Bootstrap, CAD tools, PC-Crash, ROS, PLC programming...</p>
+          </div>
+        </div>
+      </div>
+  
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">Projects</h5>
+            <p class="card-text">Blog platform with Flask, Autonomous Vehicle Trajectory Planner, 3D CAD models, Vehicle Automatization...</p>
+          </div>
+        </div>
+      </div>
+  
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">About Me</h5>
+            <p class="card-text">Engineer passionate about technology, autonomous vehicles and software development.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
